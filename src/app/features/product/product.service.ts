@@ -35,7 +35,11 @@ export class ProductService {
     let request = `${this.apiUrl}?limit=${size}&page=${page}`;
     let params = new HttpParams();
     for (const key in filters) {
-      if (filters[key] && filters[key].value) {
+      if (
+        filters[key] &&
+        filters[key].value !== undefined &&
+        filters[key].value !== null
+      ) {
         params = params.set(key, JSON.stringify(filters[key]));
       }
     }
