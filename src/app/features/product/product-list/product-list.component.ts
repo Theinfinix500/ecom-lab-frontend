@@ -1,13 +1,18 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FilterMetadata } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
+import {
+  TableLazyLoadEvent,
+  TableModule,
+  TableRowSelectEvent
+} from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { Product } from '../product.model';
 import { ProductService } from '../product.service';
@@ -29,10 +34,11 @@ import { ProductService } from '../product.service';
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
-export class ProductListComponent implements OnInit {
-  products!: Product[];
+export class ProductListComponent {
+  router: Router = inject(Router);
+  productService: ProductService = inject(ProductService);
 
-  statuses!: any[];
+  products!: Product[];
 
   loading: boolean = true;
 
@@ -40,19 +46,6 @@ export class ProductListComponent implements OnInit {
   value: any;
   totalRecords: number = 0;
   globalFilterFields: string[] = ['name', 'description'];
-
-  constructor(private productService: ProductService) {}
-
-  ngOnInit() {
-    this.statuses = [
-      { label: 'Unqualified', value: 'unqualified' },
-      { label: 'Qualified', value: 'qualified' },
-      { label: 'New', value: 'new' },
-      { label: 'Negotiation', value: 'negotiation' },
-      { label: 'Renewal', value: 'renewal' },
-      { label: 'Proposal', value: 'proposal' }
-    ];
-  }
 
   loadProducts(tableEvent: TableLazyLoadEvent) {
     this.loading = true;
@@ -81,29 +74,11 @@ export class ProductListComponent implements OnInit {
       });
   }
 
-  clear(table: Table) {
-    table.clear();
-  }
+  onRowSelect(tableRowEvent: TableRowSelectEvent) {
+    const {
+      data: { id: productId }
+    } = tableRowEvent;
 
-  getSeverity(status: string) {
-    switch (status) {
-      case 'unqualified':
-        return 'danger';
-
-      case 'qualified':
-        return 'success';
-
-      case 'new':
-        return 'info';
-
-      case 'negotiation':
-        return 'warning';
-
-      case 'renewal':
-        return null;
-
-      default:
-        return undefined;
-    }
+    if (productId) this.router.navigate(['/products', productId]);
   }
 }
