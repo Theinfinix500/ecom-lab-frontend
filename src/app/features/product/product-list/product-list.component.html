@@ -43,7 +43,7 @@
       <th style="width: 22%" pSortableColumn="stock">
         Stock <p-sortIcon field="stock" />
       </th>
-      <th style="width: 12%">Verified</th>
+      <th style="width: 12%">Visibility</th>
     </tr>
     <tr>
       <th></th>
@@ -76,7 +76,9 @@
           placeholder="Search by stock"
           ariaLabel="Filter Stock" />
       </th>
-      <th><p-columnFilter type="boolean" field="verified"></p-columnFilter></th>
+      <th>
+        <p-columnFilter type="boolean" field="isVisible"></p-columnFilter>
+      </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-product>
@@ -102,8 +104,8 @@
         <i
           class="pi"
           [ngClass]="{
-            'text-green-500 pi-check-circle': true,
-            'text-red-500 pi-times-circle': !true
+            'text-green-500 pi-check-circle': product.isVisible,
+            'text-red-500 pi-times-circle': !product.isVisible
           }"></i>
       </td>
     </tr>
