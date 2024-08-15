@@ -9,21 +9,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { Product } from '../product.model';
 import { ProductService } from '../product.service';
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  comparedPrice?: number;
-  stock: number;
-  categories: any[];
-  images: string[];
-  tags: string[];
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 @Component({
   selector: 'app-product-list',
